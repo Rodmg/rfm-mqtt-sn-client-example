@@ -1,0 +1,12 @@
+[submodule "lib/MQTTSNClient"]
+	path = lib/MQTTSNClient
+	url = https://github.com/Rodmg/MQTTSNClient.git
+[submodule "lib/MQTTSNPacket"]
+	path = lib/MQTTSNPacket
+	url = https://github.com/Rodmg/MQTTSNPacket.git
+[submodule "lib/VirtualTimerArduino"]
+	path = lib/VirtualTimerArduino
+	url = https://github.com/Rodmg/VirtualTimerArduino.git
+[submodule "lib/WSNetworkRFM69"]
+	path = lib/WSNetworkRFM69
+	url = https://github.com/Rodmg/WSNetworkRFM69.git

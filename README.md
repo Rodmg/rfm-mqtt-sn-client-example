@@ -10,6 +10,12 @@ You also need to install the **RadioHead library** from the PlatformIO library m
 
 ## Using
 
+First, clone this repo **with all its submodules**:
+
+```
+git clone --recursive https://github.com/Rodmg/rfm-mqtt-sn-client-example.git
+```
+
 Open the project folder from the Atom IDE with PlatformIO IDE plugin installed, connect your board and press the upload button.
 
 Right now the project is configured to work on an Arduino nano with ATmega328 or equivalent, that has the RFM69 connected via SPI the standard way that the [RadioHead library](http://www.airspayce.com/mikem/arduino/RadioHead/) recommends.
