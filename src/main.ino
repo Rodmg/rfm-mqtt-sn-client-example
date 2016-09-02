@@ -8,6 +8,8 @@ WSNetwork network;
 Client client(network);
 
 // Device fixed address
+// For this example we are using a fixed address for simplicity
+// This means that we don't need to pair the device with the gateway, it will just connect
 #define ADDR 23
 
 // Topic strings
