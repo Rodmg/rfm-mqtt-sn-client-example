@@ -1,11 +1,12 @@
 #include <MQTTSNClient.h>
 #include <WSNetwork.h>
 #include <VirtualTimer.h>
+#include <LowPower.h>
 
 using namespace MQTTSN;
 
 WSNetwork network;
-Client client(network);
+Client client(network, 5000);
 
 // Device fixed address
 // For this example we are using a fixed address for simplicity
@@ -20,6 +21,8 @@ const char subscribeTopic[] = "client/subscribe";
 // Timer for publishing example topic repeatedly
 VirtualTimer timer;
 
+bool sleeping = false;
+
 // Function that handles the "client/subscribe" topic
 void subscribeHandler(struct MQTTSN::MessageData &msg)
 {
@@ -31,6 +34,7 @@ void subscribeHandler(struct MQTTSN::MessageData &msg)
     Serial.print(((char*)msg.message.payload)[i]);
   }
   Serial.println();
+  sleeping = !sleeping;
 }
 
 // Function for connecting with gateway
@@ -60,7 +64,7 @@ bool connectMqtt()
 
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(115200);
   // Start with a fixed address
   network.begin(ADDR);
   // Start timer for publishing "client/publish" every 5 seconds
@@ -69,22 +73,37 @@ void setup()
 
 void loop()
 {
-  // Attend network tasks
-  client.loop();
-  if(!client.isConnected())
+  if(!sleeping)
   {
-    Serial.println("MQTT disconnected, trying to reconnect...");
-    if(!connectMqtt()) return;
+    // Attend network tasks
+    client.loop();
+    if(!client.isConnected())
+    {
+      Serial.println("MQTT disconnected, trying to reconnect...");
+      if(!connectMqtt()) return;
+    }
+    // Attend timer
+    if(timer.expired())
+    {
+      char payload[] = "Hello world";
+      bool retained = false;
+      // Publish "client/publish"
+      client.publish(publishTopic, payload, strlen(payload), QOS1, retained);
+      // Restart timer
+      timer.countdown_ms(5000);
+    }
   }
-  // Attend timer
-  if(timer.expired())
+  else
   {
-    char payload[] = "Hello world";
-    bool retained = false;
-    // Publish "client/publish"
-    client.publish(publishTopic, payload, strlen(payload), QOS1, retained);
-    // Restart timer
-    timer.countdown_ms(5000);
+    Serial.println("Going to sleep");
+    delay(10);
+    client.disconnect(16);
+    network.sleep();
+    LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_ON);
+    LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_ON);
+    // After a good night sleep
+    client.awake(); // Blocking, attends MQTT-SN awake procedure until a PINGRESP is received
+
   }
 
 }
