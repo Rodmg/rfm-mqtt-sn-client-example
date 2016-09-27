@@ -5,12 +5,13 @@
 using namespace MQTTSN;
 
 WSNetwork network;
-Client client(network);
+Client client(network, 5000);
 
 // Device fixed address
 // For this example we are using a fixed address for simplicity
 // This means that we don't need to pair the device with the gateway, it will just connect
 #define ADDR 23
+#define PAN 0x09
 
 // Topic strings
 const char lastWill[] = "lastwill";
@@ -62,7 +63,7 @@ void setup()
 {
   Serial.begin(9600);
   // Start with a fixed address
-  network.begin(ADDR);
+  network.begin(ADDR, PAN);
   // Start timer for publishing "client/publish" every 5 seconds
   timer.countdown_ms(5000);
 }
