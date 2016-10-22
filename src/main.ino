@@ -12,7 +12,7 @@ Client client(network, 1000);
 // For this example we are using a fixed address for simplicity
 // This means that we don't need to pair the device with the gateway, it will just connect
 #define ADDR 23
-#define PAN 0x09
+#define PAN 0x01
 
 // Topic strings
 const char lastWill[] = "lastwill";
