@@ -6,8 +6,6 @@ An example of an Aquila 2.0 MQTT-SN client implementation for RFM69 (915Mhz) mod
 
 For compiling and uploading this code to the board you need the PlatformIO tools and the [PlatformIO IDE](http://platformio.org/get-started).
 
-You also need to install the **RadioHead library** from the PlatformIO library manager.
-
 ## Using
 
 First, clone this repo **with all its submodules**:
